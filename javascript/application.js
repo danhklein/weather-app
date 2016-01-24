@@ -12,27 +12,36 @@ $(document).ready(function() {
   });
 
   //Repeat process for var get IP with getWeather getLong getLat (hardcode weather)
-  var getWeather= $.ajax({
-    url: "http://api.openweathermap.org/data/2.5/weather?q=boulder,co&APPID=3dca7066833da323f021a707b055f61a",
-    method: "GET",
-    success: function(data) {
-      // console.log(data);
-      var weatherVal = data.weather;
-      var describeCurrent = weatherVal[0].description;
-      $("#weather").html(describeCurrent);
-    }
-  });
+  // var getWeather= $.ajax({
+  //   url: "http://api.openweathermap.org/data/2.5/weather?q=boulder,co&APPID=3dca7066833da323f021a707b055f61a",
+  //   method: "GET",
+  //   success: function(data) {
+  //     // console.log(data);
+  //     var weatherVal = data.weather;
+  //     var describeCurrent = weatherVal[0].description;
+  //     $("#weather").html(describeCurrent);
+  //   }
+  // });
 
   $("#submit").on('click',function(event) {
     event.preventDefault();
-    var url = 'https://freegeoip.net/json/128.177.172.220';
+
+    var url = "http://api.openweathermap.org/data/2.5/weather?q=";
+    var location = $("#citystate").val();
+
+    var apiKey = "&APPID=3dca7066833da323f021a707b055f61a";
     var getLatLon = $.ajax({
-      url: url,
+      url: url + location + apiKey,
       method: "GET",
       success: function(data) {
         // console.log(data);
-        var latitude = data.latitude;
-        var longitude = data.longitude;
+        var lonlatVal = data.coord;
+        var weatherVal = data.weather;
+        var describeCurrent = weatherVal[0].description;
+        var longitude = lonlatVal.lon;
+        var latitude = lonlatVal.lat;
+
+        $("#weather").html(describeCurrent);
         $("#longitude").html(longitude);
         $("#latitude").html(latitude);
       }
